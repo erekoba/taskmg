@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="BUTTON" class="btn-toggle" @click="tapButton()" :class="{'is-active':toggleFlag}" />
+    <p>{{message}}</p>
+
+    <h1 v-if="num >=10">10以上</h1>
+    <h2 v-else-if="num >=5">5以上</h2>
+    <h3 v-else>4未満</h3>
+    <ul>
+      <li v-for="item in items">
+        <p>{{item.id}}{{item.text}}</p>
+      </li>
+    </ul>
+    <input type="text" v-model="message">
+    <input type="checkbox" v-model="isChecked">
+    <p>{{message}}{{isChecked}}</p>
+    <ul>
+      <li v-for="jtem in jtems">
+        <label v-bind:class="{done:jtem.isChecked}">
+          <input type="checkbox" v-model="jtem.isChecked"> {{ jtem.title }}
+        </label>
+      </li>
+    </ul>
+    <p>
+      <input type="text" placeholder="TODOを入力しましょう！" v-model="newItemTitle" v-on:keyup.enter="addTodo(newItemTitle)">
+    </p>
+    <button v-on:click="deleteTodo()">チェック済みを削除する</button>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+  var app = new Vue({
+    el: "#app",
+    methods: {
+      tapButton() {
+        this.toggleFlag = !this.toggleFlag;
+        console.log(this.toggleFlag);
+      },
+      addTodo: function (newTitle) {
+        this.jtems.push({
+          title: newTitle,
+          isChecked: false
+        });
+        this.newItemTitle = '';
+      },
+      deleteTodo: function () {
+        this.jtems = this.jtems.filter(function (jtem) {
+          return jtem.isChecked == false;
+        });
+      }
+    },
+    data() {
+      return {
+        toggleFlag: false,
+        num: 10,
+        message: "Hello Vue.js",
+        items: [
+          { id: 1, text: ".油そばを食べる" },
+          { id: 2, text: ".ラーメンを食べる" },
+          { id: 3, text: ".うどんを食べる" },
+        ],
+        jtems: [
+          { title: '領収書を準備する', isChecked: true },
+          { title: 'Vue.jsハンズオンの資料を作る', isChecked: true },
+          { title: '参加者の人数を確認する', isChecked: false },
+          { title: 'ピザを注文する', isChecked: false },
+          { title: '参加費のお釣りを準備する', isChecked: false },
+          { title: '会場設営をする', isChecked: false },
+        ],
+        newItemTitle: ''
+      }
+    }
+  })
+</script>
+<style>
+  .done {
+    text-decoration: line-through;
+  }
+</style>
+
+</html>
